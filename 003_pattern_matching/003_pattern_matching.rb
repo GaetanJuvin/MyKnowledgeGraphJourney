@@ -62,34 +62,34 @@ class KnowledgeGraph
     def match(triples)
         solutions = [{}]
 
-        triples.each do |(s, p, o)|
+        triples.each do |(subject, predicate, object)|
             new_solutions = []
 
             solutions.each do |solution|
                 @edges.each do |e|
-                    sv = variable?(s) ? solution[s] || e[:from] : s
-                    pv = variable?(p) ? solution[p] || e[:pred] : p
-                    ov = variable?(o) ? solution[o] || e[:to]   : o
+                    subject_value = variable?(subject) ? solution[subject] || e[:from] : subject
+                    predicate_value = variable?(predicate) ? solution[predicate] || e[:pred] : predicate
+                    object_value = variable?(object) ? solution[object] || e[:to]   : object
 
-                    next unless e[:from] == sv
-                    next unless e[:pred] == pv
-                    next unless e[:to]   == ov
+                    next unless e[:from] == subject_value
+                    next unless e[:pred] == predicate_value
+                    next unless e[:to]   == object_value
 
                     new_binding = solution.dup
 
-                    if variable?(s)
-                        next if new_binding[s] && new_binding[s] != e[:from]
-                        new_binding[s] = e[:from]
+                    if variable?(subject)
+                        next if new_binding[subject] && new_binding[subject] != e[:from]
+                        new_binding[subject] = e[:from]
                     end
 
-                    if variable?(p)
-                        next if new_binding[p] && new_binding[p] != e[:pred]
-                        new_binding[p] = e[:pred]
+                    if variable?(predicate)
+                        next if new_binding[predicate] && new_binding[predicate] != e[:pred]
+                        new_binding[predicate] = e[:pred]
                     end
 
-                    if variable?(o)
-                        next if new_binding[o] && new_binding[o] != e[:to]
-                        new_binding[o] = e[:to]
+                    if variable?(object)
+                        next if new_binding[object] && new_binding[object] != e[:to]
+                        new_binding[object] = e[:to]
                     end
 
                     new_solutions << new_binding
